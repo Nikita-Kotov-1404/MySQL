@@ -1,0 +1,272 @@
+Вам необходимо написать SQL запросы, перечисленные ниже.
+Результатом вашей домашней работы для каждого пункта должны быть SQL запрос, написанный под заданием.
+Кроме того, после каждого задания у вас есть ответ правильной выборки для самоконтроля.
+
+1.	Выбрать все строки из таблицы c перевозчиками.
+
+Request: SELECT * FROM Shippers;
+
++-----------+------------------+----------------+
+| ShipperID | ShipperName      | Phone          |
++-----------+------------------+----------------+
+|         1 | Speedy Express   | (503) 555-9831 |
+|         2 | United Package   | (503) 555-3199 |
+|         3 | Federal Shipping | (503) 555-9931 |
++-----------+------------------+----------------+
+
+2.	Выбрать первые 3 строки из таблицы c сотрудниками.
+
+Request: SELECT * FROM Employees LIMIT 3;
+
++----------------------------------------------------------------------------------------------
+|          1 | Davolio   | Nancy     | 1968-12-08 | EmpID1.pic | Education includes a BA in na.
+|          2 | Fuller    | Andrew    | 1952-02-19 | EmpID2.pic | Andrew received his BTS vice. 
+|          3 | Leverling | Janet     | 1963-08-30 | EmpID3.pic | Janet has a BS degree in ative
++----------------------------------------------------------------------------------------------
+
+3.	Из таблицы сотрудников выбрать все имена, фамилии, дни рождения в следующем порядке: BirthDate, FirstName, LastName, количество строк в выборке ограничить 3-мя.
+
+Request: SEELCT A.BirthDate, A.FirstName , A.LastName FROM Employees AS A LIMIT 3;
+
++------------+-----------+-----------+
+| BirthDate  | FirstName | LastName  |
++------------+-----------+-----------+
+| 1968-12-08 | Nancy     | Davolio   |
+| 1952-02-19 | Andrew    | Fuller    |
+| 1963-08-30 | Janet     | Leverling |
++------------+-----------+-----------+
+
+4.	Выбрать имена и фамлии сотрудников, родившихся в 1958 году.
+
+Request: SEELCT A.FirstName , A.LastName FROM Employees AS A WHERE A.BirthDate LIKE '1958%';
+
++-----------+----------+
+| FirstName | LastName |
++-----------+----------+
+| Margaret  | Peacock  |
+| Laura     | Callahan |
++-----------+----------+
+
+5.	Выбрать все товары с ценой от 23 до 25.
+
+Request: SELECT * FROM Products WHERE Products.Price >= '23.00' AND Products.Price <= '25.00';
+
++-----------+------------------------------+------------+------------+-------------------+-------+
+| ProductID | ProductName                  | SupplierID | CategoryID | Unit              | Price |
++-----------+------------------------------+------------+------------+-------------------+-------+
+|         6 | Grandma's Boysenberry Spread |          3 |          2 | 12 - 8 oz jars    | 25.00 |
+|        14 | Tofu                         |          6 |          7 | 40 - 100 g pkgs.  | 23.25 |
+|        55 | Pbtu chinois                 |         25 |          6 | 24 boxes x 2 pies | 24.00 |
++-----------+------------------------------+------------+------------+-------------------+-------+
+
+6.	Найти товары с минимальной ценой.
+
+Request: SELECT * FROM Products WHERE Price = (SELECT MIN(Price) FROM Products);
+
++-----------+-------------+------------+------------+-------+-------+
+| ProductID | ProductName | SupplierID | CategoryID | Unit  | Price |
++-----------+-------------+------------+------------+-------+-------+
+|        33 | Geitost     |         15 |          4 | 500 g |  2.50 |
++-----------+-------------+------------+------------+-------+-------+
+
+7.	Найти товары с максимальной ценой. 
+
+Request: SELECT * FROM Products WHERE Price = (SELECT MAX(Price) FROM Products);
+
++-----------+---------------+------------+------------+--------------------+--------+
+| ProductID | ProductName   | SupplierID | CategoryID | Unit               | Price  |
++-----------+---------------+------------+------------+--------------------+--------+
+|        38 | Cute de Blaye |         18 |          1 | 12 - 75 cl bottles | 263.50 |
++-----------+---------------+------------+------------+--------------------+--------+
+
+8.	Выбрать все товары, у которых Unit '10 pkgs.'.
+
+Request: SEELCT * FROM Products WHERE Unit LIKE '10 pkgs.';
+
++-----------+-------------+------------+------------+----------+-------+
+| ProductID | ProductName | SupplierID | CategoryID | Unit     | Price |
++-----------+-------------+------------+------------+----------+-------+
+|        48 | Chocolade   |         22 |          3 | 10 pkgs. | 12.75 |
++-----------+-------------+------------+------------+----------+-------+
+
+9.	Выбрать адреса поставщиков, которые проживают в одном из городов: Tokyo, Frankfurt, Osaka. 
+
+Request: SELECT Address FROM Suppliers WHERE City IN ('Tokyo', 'Frankfurt', 'Osaka');
+
++---------------------------+
+| Address                   |
++---------------------------+
+| 9-8 Sekimai Musashino-shi |
+| 92 Setsuko Chuo-ku        |
+| Bogenallee 51             |
++---------------------------+
+
+10.	Выбрать название товаров начинающихся с буквы “G”, у которых цена больше 37.
+
+Request: SELECT A.ProductName  FROM AS A WHERE  A.ProductName LIKE 'G%' AND A.Price > '37.00';  
+
++------------------------+
+| ProductName            |
++------------------------+
+| Gnocchi di nonna Alice |
++------------------------+
+
+11.	 Вывести список стран начинающихся на S и состоящих из 5 букв, из которых есть поставщики. 
+
+Request: SELECT A.Country FROM Suppliers AS A WHERE A.Country LIKE 'S%' AND LENGTH(Country) = 5;
+
++---------+
+| Country |
++---------+
+| Spain   |
++---------+
+
+12.	 Вывести сумму всех товаров, в названии которых содержится ”od”, столбец назвать Summ.
+
+Request: SELECT SUM(Price) AS Summ FROM Products WHERE ProductName LIKE '%od%';
+
++--------+
+| Summ   |
++--------+
+| 131.00 |
++--------+
+
+13.	 Вывести среднюю сумму товаров, поставляемых в бутылках, округлив до 2-х знаков после запятой, столбец назвать Summ.
+
+Request: SELECT ROUND(AVG(Price),2) AS Summ FROM Products WHERE Unit LIKE '%bottle%'; 
+
++-------+
+| Summ  |
++-------+
+| 38.75 |
++-------+
+
+14.	 Найти количество клиентов, которые НЕ проживают в Франции и Германии,  столбец назвать Countt.
+
+Request: SELECT COUNT(CustomerName) AS Countt FROM Customers WHERE Country NOT IN ('France', 'Germany');
+
+
++--------+
+| Countt |
++--------+
+|     69 |
++--------+
+
+15.	 Вывести имена сотрудников, родившихся после 01.01.1968 года. Отсортировать результат по имени. 
+
+Request: SELECT FirstName FROM Employees WHERE BirthDate > '1968-01-01' ORDER BY FirstName;
+
++-----------+
+| FirstName |
++-----------+
+| Anne      |
+| Nancy     |
++-----------+
+
+16.	 Выбрать названия товаров, у которых Price = 13 или 15 и отсортировать по возрастанию, использовать Select команды с объединением результатов через UNION.
+
+Request: SELECT ProductName FROM Products WHERE Price=13 UNION SELECT ProductName FROM Products WHERE Price=15 ORDER BY ProductName;
+
++---------------------------------+
+| ProductName                     |
++---------------------------------+
+| Original Frankfurter grine Soae |
+| Outback Lager                   |
+| Rud Kaviar                      |
++---------------------------------+
+
+17.	 Показать имена товаров, в названии которых третяя буква m и названия их поставщиков.
+
+Request: SELECT A.ProductName, B.SupplierName FROM Products AS A JOIN Suppliers AS B on A.SupplierID = B.SupplierID WHERE A.ProductName LIKE '__m%';
+
++---------------------------+-----------------------------------+
+| ProductName               | SupplierName                      |
++---------------------------+-----------------------------------+
+| Gumbur Gummiburchen       | Heli Swaren GmbH & Co. KG         |
+| Camembert Pierrot         | Gai puturage                      |
+| Wimmers gute Semmelknudel | Plutzer Lebensmittelgroumurkte AG |
++---------------------------+-----------------------------------+
+
+18.	Показать имена и фамилии сотрудника, который оформил заказ 1996-11-27 (написать запрос двумя способами: через INNER Join, и используя подзапрос).
+
+Request: SELECT Employees.FirstName, Employees.LastName FROM Orders INNER JOIN Employees ON Employees.EmployeeID = Orders.EmployeeID WHERE Orders.OrderDate = '1996-11-27';
+
+SELECT FirstName, LastName FROM Employees WHERE EmployeeID IN (SELECT EmployeeID FROM Orders WHERE OrderDate='1996-11-27');
+
++-----------+-----------+
+| FirstName | LastName  |
++-----------+-----------+
+| Janet     | Leverling |
++-----------+-----------+
+
+
+19.	Выбрать все товары, у которых поставщик «Grandma Kelly's Homestead» и цена > 27. В результате вывести 3 колонки: Product, Supplier, Price.
+
+Request: SELECT Products.ProductName, Suppliers.SupplierName, Products.Price FROM Products INNER JOIN Suppliers ON Products.SupplierID = Suppliers.SupplierID WHERE Products.Price > 27 AND Suppliers.SupplierName LIKE 'Grandma Kelly_s Homestead';
+
++---------------------------------+---------------------------+-------+
+| ProductName                     | SupplierName              | Price |
++---------------------------------+---------------------------+-------+
+| Uncle Bob's Organic Dried Pears | Grandma Kelly's Homestead | 30.00 |
+| Northwoods Cranberry Sauce      | Grandma Kelly's Homestead | 40.00 |
++---------------------------------+---------------------------+-------+
+
+20.	 Вывести сумму всех заказов (столбец обозвать Summ), у которых имя продукта - 'Queso Cabrales' (написать запрос двумя способами: через INNER Join, и используя подзапрос).
+
+Request: SELECT SUM(Quantity) AS Summ FROM Products INNER JOIN OrderDetails ON Products.ProductID = OrderDetails.ProductID WHERE Products.ProductName = 'Queso Cabrales';
+
+SELECT SUM(Quantity) AS Summ FROM OrderDetails WHERE ProductID IN (SELECT ProductID FROM Products WHERE ProductName='Queso Cabrales');
+
++------+
+| Summ |
++------+
+|  182 |
++------+
+
+21.	Показать все заказы, которые были отправлены по адресу «Ekergatan 24» с их заказчиками и сотрудниками. В результате вывести 3 колонки – ID заказа, имя заказчика, имя сотрудника, фамилия сотрудника.
+
+Request: SELECT B.OrderID, A.CustomerName, C.FirstName, C.LastName FROM Customers AS A JOIN Orders AS B ON A.CustomerID = B.CustomerID JOIN Employees AS C ON B.EmployeeID = C.EmployeeID WHERE A.Address LIKE 'Ekergatan 24';
+
++---------+----------------+-----------+-----------+
+| OrderID | CustomerName   | FirstName | LastName  |
++---------+----------------+-----------+-----------+
+|   10264 | Folk och fe HB | Michael   | Suyama    |
+|   10327 | Folk och fe HB | Andrew    | Fuller    |
+|   10378 | Folk och fe HB | Steven    | Buchanan  |
+|   10434 | Folk och fe HB | Janet     | Leverling |
++---------+----------------+-----------+-----------+
+
+22.	Преобразовать предыдущий запрос таким образом, чтобы те же данные выводились в 3-х колонках – объединить LastName и FirstName из Employees в одну колонку через пробел и назвать ее EmployeeName (2 LEFT JOINS). 
+
+Request: SELECT B.OrderID, A.CustomerName, CONCAT(C.FirstName, ' ', C.LastName) AS EmployeeName FROM Customers AS A JOIN Orders AS B ON A.CustomerID = B.CustomerID JOIN Employees AS C ON B.EmployeeID = C.EmployeeID WHERE A.Address LIKE 'Ekergatan 24';
+
++---------+----------------+-----------------+
+| OrderID | CustomerName   | EmployeeName    |
++---------+----------------+-----------------+
+|   10264 | Folk och fe HB | Michael Suyama  |
+|   10327 | Folk och fe HB | Andrew Fuller   |
+|   10378 | Folk och fe HB | Steven Buchanan |
+|   10434 | Folk och fe HB | Janet Leverling |
++---------+----------------+-----------------+
+
+23.	Показать все продукты, содержащиеся в заказах 1997-го года и в названии которых менее 5 букв. В результате вывести OrderID, OrderDate, ProductName (написать запрос двумя способами: через INNER JOINS, и используя подзапросы).
+
+Request: SELECT A.OrderID, A.OrderDate, B.ProductName FROM Orders AS A JOIN OrderDetails AS C ON A.OrderID = C.OrderID JOIN Products AS B ON C.ProductID = B.ProductID WHERE A.OrderDate LIKE '1997%'AND LENGTH(B.ProductName) < 5;
+
++---------+------------+-------------+
+| OrderID | OrderDate  | ProductName |	
++---------+------------+-------------+
+|   10409 | 1997-01-09 | Tofu        |
+|   10412 | 1997-01-13 | Tofu        |
+|   10427 | 1997-01-27 | Tofu        |
++---------+------------+-------------+
+
+24.	Показать названия продуктов и их категорий, которые используются в заказах от заказчика по имени Blondel père et fils и категории которых состоят как минимум из 2-х слов.
+Нужно еще подумать как сюда впихнуть запрос про два слова, пока что ничего не нашел.
+Request: SELECT D.CategoryName, B.ProductName FROM Customers AS E JOIN Orders AS A ON E.CustomerID = A.CustomerID JOIN OrderDetails AS C ON A.OrderID = C.OrderID JOIN Products AS B ON C.ProductID = B.ProductID JOIN Categories AS D ON B.CategoryID = D.CategoryID WHERE E.CustomerName LIKE 'Blondel%' AND D.CategoryName LIKE '%[ ]%';
+
++----------------+------------------------+
+| CategoryName   | ProductName            |
++----------------+------------------------+
+| Dairy Products | Mozzarella di Giovanni |
++----------------+------------------------+
